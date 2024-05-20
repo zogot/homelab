@@ -24,6 +24,17 @@ To be written
 
 ### Proxmox - Jupiter
 
+The IP Address and VM ID relate to each other. Just remove the last digit (should always be zero)
+
+| VM ID | IP              |
+|-------|-----------------|
+| 100   | 192.168.XXX.10  |
+| 250   | 192.168.XXX.25  |
+| 990   | 192.168.XXX.99  |
+| 1000  | 192.168.XXX.100 |
+| 2500  | 192.168.XXX.250 |
+
+
 #### Network Config
 
 After installation, keep the Beelink Device plugged into the screen, login with root and edit

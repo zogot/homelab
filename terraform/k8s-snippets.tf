@@ -1,4 +1,4 @@
-resource "proxmox_virtual_environment_file" "cloud-init-k8s-controller-10" {
+resource "proxmox_virtual_environment_file" "cloud-init-k8s-controller-100" {
   provider     = proxmox.jupiter
   node_name    = var.proxmox_node_name
   content_type = "snippets"
@@ -7,7 +7,7 @@ resource "proxmox_virtual_environment_file" "cloud-init-k8s-controller-10" {
   source_raw {
     data = templatefile("./cloud-init/k8s-control-plane.yaml.tftpl", {
       common_config = templatefile("./cloud-init/k8s-common.yaml.tftpl", {
-        hostname    = "k8s-controller-10"
+        hostname    = "k8s-controller-100"
         username    = var.vm_user
         password    = var.vm_password
         pub_key     = var.public_key
@@ -25,7 +25,7 @@ resource "proxmox_virtual_environment_file" "cloud-init-k8s-controller-10" {
 
 resource "proxmox_virtual_environment_file" "cloud-init-k8s-workers" {
   # have to create a unique snippet for each worker due to the hostname.
-  for_each = { for worker in var.k8s_workers : worker.id => worker }
+  for_each = { for worker in var.k8s_workers : worker.id * 10 => worker }
 
   provider     = proxmox.jupiter
   node_name    = var.proxmox_node_name
@@ -35,7 +35,7 @@ resource "proxmox_virtual_environment_file" "cloud-init-k8s-workers" {
   source_raw {
     data = templatefile("./cloud-init/k8s-worker.yaml.tftpl", {
       common_config = templatefile("./cloud-init/k8s-common.yaml.tftpl", {
-        hostname    = "k8s-worker-${each.value.id}"
+        hostname    = "k8s-worker-${each.key}"
         username    = var.vm_user
         password    = var.vm_password
         pub_key     = var.public_key
@@ -44,6 +44,6 @@ resource "proxmox_virtual_environment_file" "cloud-init-k8s-workers" {
         kubeadm_cmd = module.kubeadm-join.stdout
       })
     })
-    file_name = "cloud-init-k8s-worker-${each.value.id}.yaml"
+    file_name = "cloud-init-k8s-worker-${each.key}.yaml"
   }
 }

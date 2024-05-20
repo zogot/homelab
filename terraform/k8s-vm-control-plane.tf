@@ -1,12 +1,12 @@
-resource "proxmox_virtual_environment_vm" "k8s-controller-10" {
+resource "proxmox_virtual_environment_vm" "k8s-controller-100" {
   provider = proxmox.jupiter
   node_name = var.proxmox_node_name
 
-  name = "k8s-controller-10"
-  description = "Kubernetes Control Plane 10"
+  name = "k8s-controller-100"
+  description = "Kubernetes Control Plane 100"
   tags = ["k8s", "control-plane"]
 
-  vm_id = 10
+  vm_id = 100
   on_boot = true
 
   machine = "pc"
@@ -59,21 +59,21 @@ resource "proxmox_virtual_environment_vm" "k8s-controller-10" {
     }
 
     datastore_id = "local-lvm"
-    user_data_file_id = proxmox_virtual_environment_file.cloud-init-k8s-controller-10.id
+    user_data_file_id = proxmox_virtual_environment_file.cloud-init-k8s-controller-100.id
   }
 }
 
-resource "local_file" "k8s-controller-10-ip" {
-  content         = proxmox_virtual_environment_vm.k8s-controller-10.ipv4_addresses[1][0]
-  filename        = "../output/terraform/k8s-controller-10-ip.txt"
+resource "local_file" "k8s-controller-100-ip" {
+  content         = proxmox_virtual_environment_vm.k8s-controller-100.ipv4_addresses[1][0]
+  filename        = "../output/terraform/k8s-controller-100-ip.txt"
   file_permission = "0644"
 }
 
 module "kube-config" {
-  depends_on   = [local_file.k8s-controller-10-ip]
+  depends_on   = [local_file.k8s-controller-100-ip]
   source       = "Invicton-Labs/shell-resource/external"
   version      = "0.4.1"
-  command_unix = "ssh -o StrictHostKeyChecking=no ${var.vm_user}@${local_file.k8s-controller-10-ip.content} cat /home/${var.vm_user}/.kube/config"
+  command_unix = "ssh -o StrictHostKeyChecking=no ${var.vm_user}@${local_file.k8s-controller-100-ip.content} cat /home/${var.vm_user}/.kube/config"
 }
 
 resource "local_file" "kube-config" {
@@ -86,12 +86,14 @@ module "kubeadm-join" {
   depends_on   = [local_file.kube-config]
   source       = "Invicton-Labs/shell-resource/external"
   version      = "0.4.1"
-  command_unix = "ssh -o StrictHostKeyChecking=no ${var.vm_user}@${local_file.k8s-controller-10-ip.content} /usr/bin/kubeadm token create --print-join-command"
+  command_unix = "ssh -o StrictHostKeyChecking=no ${var.vm_user}@${local_file.k8s-controller-100-ip.content} /usr/bin/kubeadm token create --print-join-command"
   // rerun when workers update
-  triggers     = [var.k8s_workers]
+  triggers     = {
+    worker_ids = join(",", var.k8s_workers[*].id)
+  }
 }
 
 output "k8s_controller_10_ipv4_address" {
-  depends_on = [proxmox_virtual_environment_vm.k8s-controller-10]
-  value      = proxmox_virtual_environment_vm.k8s-controller-10.ipv4_addresses[1][0]
+  depends_on = [proxmox_virtual_environment_vm.k8s-controller-100]
+  value      = proxmox_virtual_environment_vm.k8s-controller-100.ipv4_addresses[1][0]
 }

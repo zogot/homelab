@@ -1,14 +1,14 @@
 resource "proxmox_virtual_environment_vm" "k8s-workers" {
-  for_each = { for worker in var.k8s_workers : worker.id => worker }
+  for_each = { for worker in var.k8s_workers : worker.id * 10 => worker }
 
   provider  = proxmox.jupiter
   node_name = var.proxmox_node_name
 
-  name        = "k8s-worker-${each.value.id}"
-  description = "Kubernetes Worker ${each.value.id}"
+  name        = "k8s-worker-${each.key}"
+  description = "Kubernetes Worker ${each.key}"
   tags        = ["k8s", "worker"]
 
-  vm_id       = each.value.id
+  vm_id       = each.key
   on_boot     = true
 
   machine       = "pc"
@@ -62,7 +62,7 @@ resource "proxmox_virtual_environment_vm" "k8s-workers" {
     }
 
     datastore_id      = "local-lvm"
-    user_data_file_id = proxmox_virtual_environment_file.cloud-init-k8s-workers[each.value.id].id
+    user_data_file_id = proxmox_virtual_environment_file.cloud-init-k8s-workers[each.key].id
   }
 }
 
