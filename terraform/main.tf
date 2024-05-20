@@ -1,6 +1,13 @@
 terraform {
   required_version = ">= 0.13.0"
 
+  cloud {
+    organization = "homelab-rowland-nl"
+    workspaces {
+      name = "homelab"
+    }
+  }
+
   required_providers {
     proxmox = {
       source = "bpg/proxmox"

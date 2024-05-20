@@ -139,3 +139,12 @@ The list of changes includes:
 * Updated Hostnames and Resource names to be more inline with my own naming preferences
 * Changed output directory and filenames to work more with this 'monorepo' style approach
 
+
+### State
+
+Terraform State is stored in the Terraform Cloud under a Free Organization.
+
+When creating the Workspace on Terraform Cloud, make sure to change the configuration under the _Settings_ menu
+item under **Execution Mode** to _Local (custom)_
+
+This is because you run this locally initially, and then later it will run from a self-hosted GitHub Action Runner.
