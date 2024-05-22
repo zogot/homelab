@@ -13,6 +13,16 @@ terraform {
       source = "bpg/proxmox"
       version = "0.57.0"
     }
+
+    helm = {
+      source = "hashicorp/helm"
+      version = "2.13.2"
+    }
+
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.30.0"
+    }
   }
 }
 
@@ -27,4 +37,14 @@ provider "proxmox" {
     agent = true
     username = var.proxmox_username
   }
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "../output/kubernetes/config"
+  }
+}
+
+provider "kubernetes" {
+  config_path = "../output/kubernetes/config"
 }
