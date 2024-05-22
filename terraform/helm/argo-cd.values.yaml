@@ -1,0 +1,6 @@
+global:
+  domain: argocd.homelab.rowland.nl
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
