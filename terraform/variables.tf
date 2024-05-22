@@ -69,3 +69,8 @@ variable cilium_cli_version {
   description = "Cilium CLI version"
   type        = string
 }
+
+variable pihole_hashed_password {
+  description = "Hashed Password for Pihole"
+  type = string
+}

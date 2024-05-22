@@ -9,3 +9,13 @@ resource "proxmox_virtual_environment_download_file" "debian_12_generic_image" {
   checksum           = "f7ac3fb9d45cdee99b25ce41c3a0322c0555d4f82d967b57b3167fce878bde09590515052c5193a1c6d69978c9fe1683338b4d93e070b5b3d04e99be00018f25"
   checksum_algorithm = "sha512"
 }
+
+resource "proxmox_virtual_environment_download_file" "debian_12_lxc" {
+  provider = proxmox.jupiter
+  node_name = var.proxmox_node_name
+  content_type = "vztmpl"
+  datastore_id = "local"
+
+  file_name    = "debian-12-standard-12.2-1.tar.zst"
+  url          = "http://download.proxmox.com/images/system/debian-12-standard_12.2-1_amd64.tar.zst"
+}

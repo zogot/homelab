@@ -7,11 +7,9 @@
 - Unifi USG
 - Beelink SER5 Max Ryzen7 5800H, 32GB Memory
 
-## Prerequisites
+## USG
 
-### USG
-
-#### Network Config
+### Network Config
 
 | Network    | IP Range         | DHCP                             | VLAN-ID | DMZ? |
 |------------|------------------|----------------------------------|---------|------|
@@ -22,7 +20,7 @@
 
 To be written
 
-### Proxmox - Jupiter
+## Proxmox - Jupiter
 
 The IP Address and VM ID relate to each other. Just remove the last digit (should always be zero)
 
@@ -159,3 +157,37 @@ When creating the Workspace on Terraform Cloud, make sure to change the configur
 item under **Execution Mode** to _Local (custom)_
 
 This is because you run this locally initially, and then later it will run from a self-hosted GitHub Action Runner.
+
+## PiHole
+
+I decided to just start with a single PiHole instance and not yet getting Unbound up. I also wanted to run it with LXC
+instead of a VM.
+
+There wasn't a huge amount of reference material in relation to LXC issues that just resulted in answers that aren't 
+great for automation. In the end resulted in having to use provisioners in terraform, there is support for Cloud-Init
+for LXC but not yet in Proxmox.
+
+That would be a nice upgrade.
+
+### Router Firewall Rules
+
+Since the PiHole is in VLAN 100, and some of the other networks I have are zoned off from other networks, for example
+my Internet of Things network.
+
+This will also come with usage of the europa network for public available vms.
+
+This is the configuration in simple terms:
+
+* Type: LAN In
+* Name: Any to PiHole DNS
+* Action: Accept
+* Protocol: All
+  * Before Predefined
+* Source Type: Port/IP Group
+* Address Group: Any
+* Port Group: Any
+* Destination Type: Port/IP Group
+* Address Group: pihole
+  * 192.168.100.80
+* Port Group: dns
+  * 53
