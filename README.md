@@ -2,6 +2,12 @@
 
 [Management UI](https://192.168.100.9:8006)
 
+## Run
+
+```
+terraform apply -var-file jupiter.tfvars -var onepassword_sat="$OP_SERVICE_ACCOUNT_TOKEN"
+```
+
 ## Hardware
 
 - Unifi USG
@@ -191,3 +197,16 @@ This is the configuration in simple terms:
   * 192.168.100.80
 * Port Group: dns
   * 53
+
+## 1Password
+
+1Password Secret Injector is used as the secret manager for the setup. An environment variable `OP_SERVICE_ACCOUNT_TOKEN`
+has been set on my machine.
+
+It uses the onepassword-cli to set the environment variable from a password stored in the Jupiter vault.
+
+That environment variable is passed in as a terraform variable since I need to create a secret in kubernetes
+with its value, and you can't read values from providers.
+
+
+

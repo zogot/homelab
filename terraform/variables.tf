@@ -74,3 +74,9 @@ variable pihole_hashed_password {
   description = "Hashed Password for Pihole"
   type = string
 }
+
+variable onepassword_sat {
+  description = "1password Service Account Token for Secrets for the Cluster"
+  type = string
+  sensitive = true
+}
