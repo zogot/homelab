@@ -2,26 +2,10 @@ variable proxmox_node_name {
   type = string
 }
 
-variable proxmox_api_url {
-  type = string
-}
-
 variable proxmox_api_insecure {
   type = bool
   default = true
 }
-
-variable proxmox_api_token {
-  type = string
-  sensitive = true
-}
-
-variable proxmox_username {
-  description = "The Username used by SSH"
-  type = string
-  default = "root"
-}
-
 
 variable vm_user {
   description = "VM username"
@@ -72,6 +56,11 @@ variable cilium_cli_version {
 
 variable pihole_hashed_password {
   description = "Hashed Password for Pihole"
+  type = string
+}
+
+variable onepassword_vault {
+  description = "Vault where passwords for Jupiter are"
   type = string
 }
 

@@ -33,14 +33,14 @@ terraform {
 
 provider "proxmox" {
   alias = "jupiter"
-  endpoint = var.proxmox_api_url
+  endpoint = data.onepassword_item.proxmox_api_credentials.url
   insecure = true
 
-  api_token = var.proxmox_api_token
+  api_token = data.onepassword_item.proxmox_api_credentials.password
 
   ssh {
     agent = true
-    username = var.proxmox_username
+    username = data.onepassword_item.proxmox_api_credentials.username
   }
 }
 
@@ -55,5 +55,5 @@ provider "kubernetes" {
 }
 
 provider "onepassword" {
-  token = var.onepassword_sat
+  service_account_token = var.onepassword_sat
 }
