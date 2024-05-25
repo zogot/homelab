@@ -1,8 +1,8 @@
-#resource "kubernetes_namespace" "metallb-system" {
+#resource "kubernetes_namespace" "metallb-config-system" {
 #  depends_on = [local_file.kube-config]
 #
 #  metadata {
-#    name = "metallb-system"
+#    name = "metallb-config-system"
 #
 #    labels = {
 #      "pod-security.kubernetes.io/enforce" = "privileged"
@@ -12,18 +12,18 @@
 #  }
 #}
 #
-#resource "helm_release" "metallb" {
-#  depends_on = [kubernetes_namespace.metallb-system]
+#resource "helm_release" "metallb-config" {
+#  depends_on = [kubernetes_namespace.metallb-config-system]
 #
-#  chart = "metallb"
-#  name  = "metallb"
+#  chart = "metallb-config"
+#  name  = "metallb-config"
 #  repository = "https://metallb.github.io/metallb"
-#  namespace = "metallb-system"
+#  namespace = "metallb-config-system"
 #}
 #
-#resource "helm_release" "metallb-config" {
-#  name = "metallb-config"
-#  chart = "../helm/metallb"
-#  depends_on = [helm_release.metallb]
-#  namespace = "metallb-system"
+#resource "helm_release" "metallb-config-config" {
+#  name = "metallb-config-config"
+#  chart = "../helm/metallb-config"
+#  depends_on = [helm_release.metallb-config]
+#  namespace = "metallb-config-system"
 #}

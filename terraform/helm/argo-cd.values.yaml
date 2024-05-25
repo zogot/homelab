@@ -11,7 +11,7 @@ server:
     ingressClassName: external
     tls: true
     annotations: {
-      cert-manager.io/cluster-issuer: "letsencrypt-prod",
+      cert-manager.io/cluster-issuer: "letsencrypt-staging",
       external-dns.alpha.kubernetes.io/access: "private",
       nginx.ingress.kubernetes.io/rewrite-target: "/",
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP",

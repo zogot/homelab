@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: leon@rowland.nl
+    server: https://acme-v02.api.letsencrypt.org/directory
+    disableAccountKeyGeneration: true
+    privateKeySecretRef:
+      name: rowland-issuer-account-key
+    solvers:
+      - dns01:
+          cloudflare:
+            email: leon@rowland.nl
+            apiKeySecretRef:
+              name: cloudflare-api-key
+              key: global
