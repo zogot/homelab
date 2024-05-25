@@ -46,6 +46,7 @@ variable k8s_workers {
     id = number
     cores = number
     memory = number
+    disk_size = number
   }))
 }
 

@@ -36,7 +36,7 @@ resource "proxmox_virtual_environment_vm" "k8s-workers" {
     cache        = "writethrough"
     discard      = "on"
     ssd          = true
-    size         = 32
+    size         = each.value.disk_size
   }
 
   boot_order = ["scsi0"]
