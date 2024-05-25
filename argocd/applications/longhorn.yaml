@@ -19,8 +19,8 @@ spec:
             annotations:
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
               external-dns.alpha.kubernetes.io/access: "private"
-          helmPreUpgradeCheckerJob:
-            enabled: false
+          preUpgradeChecker:
+            jobEnabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
