@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     chart: external-dns
-    repository: "https://kubernetes-sigs.github.io/external-dns"
+    repoURL: "https://kubernetes-sigs.github.io/external-dns"
     targetRevision: 1.14.4
     helm:
       releaseName: external-dns-pihole

@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     chart: metallb
-    repository: "https://metallb.github.io/metallb"
+    repoURL: "https://metallb.github.io/metallb"
     helm:
       releaseName: metallb
   destination:
