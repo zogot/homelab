@@ -19,7 +19,8 @@ spec:
                 - -daemon=0
                 - -debug
                 - -noquiet
-                - -cache "/tmp/ddclient/ddclient.cache"
+                - -cache
+                - "/tmp/ddclient/ddclient.cache"
               env:
                 - name: DDCLIENT_LOGIN
                   valueFrom:
