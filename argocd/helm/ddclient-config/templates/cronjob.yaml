@@ -10,13 +10,13 @@ spec:
       template:
         spec:
           securityContext:
-            runAsUser: 911
-            runAsGroup: 911
-            fsGroup: 911
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
           restartPolicy: Never
           containers:
             - name: ddclient
-              image: "linuxserver/ddclient:3.11.2"
+              image: "lscr.io/linuxserver/ddclient:latest"
               command:
                 - ddclient
               args:
@@ -26,6 +26,12 @@ spec:
                 - -cache
                 - "/tmp/ddclient/ddclient.cache"
               env:
+                - name: PUID
+                  value: "1000"
+                - name: PGID
+                  value: "1000"
+                - name: TZ
+                  value: Europe/Amsterdam
                 - name: DDCLIENT_LOGIN
                   valueFrom:
                     secretKeyRef:
@@ -37,7 +43,7 @@ spec:
                       name: cloudflare-api-key
                       key: global
               volumeMounts:
-                - mountPath: /etc/ddclient/ddclient.conf
+                - mountPath: /config
                   name: config
                   subPath: ddclient.conf
                 - mountPath: /tmp/ddclient
@@ -46,7 +52,6 @@ spec:
             - name: config
               configMap:
                 name: ddclient-config
-                defaultMode: 0600
             - name: cache
               persistentVolumeClaim:
                 claimName: ddclient-cache
