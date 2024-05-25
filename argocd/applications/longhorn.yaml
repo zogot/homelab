@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - chart: longhorn
+      repoURL: https://charts.longhorn.io/
+      targetRevision: v1.6.2
+      helm:
+        valuesObject:
+          ingress:
+            enabled: true
+            ingressClassName: internal
+            host: longhorn.homelab.rowland.nl
+            tls: true
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+              external-dns.alpha.kubernetes.io/access: "private"
+          helmPreUpgradeCheckerJob:
+            enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
