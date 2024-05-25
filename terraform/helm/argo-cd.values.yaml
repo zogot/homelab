@@ -1,6 +1,19 @@
 global:
   domain: argocd.homelab.rowland.nl
+
+configs:
+  params:
+    server.insecure: true
+
 server:
   ingress:
     enabled: true
-    ingressClassName: nginx
+    ingressClassName: external
+    tls: true
+    annotations: {
+      cert-manager.io/cluster-issuer: "letsencrypt-prod",
+      external-dns.alpha.kubernetes.io/access: "private",
+      nginx.ingress.kubernetes.io/rewrite-target: "/",
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP",
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    }

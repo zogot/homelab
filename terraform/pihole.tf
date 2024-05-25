@@ -78,7 +78,7 @@ resource "proxmox_virtual_environment_container" "pihole" {
 
   provisioner "file" {
     content = templatefile("./config-files/pihole/setupVars.conf", {
-      password = var.pihole_hashed_password
+      password = var.pihole_hashed_password // replace with hasing here from password from 1password
     })
     destination = "/etc/pihole/setupVars.conf"
 
@@ -105,6 +105,27 @@ resource "proxmox_virtual_environment_container" "pihole" {
       private_key = tls_private_key.terraform_key.private_key_pem
     }
   }
+}
+
+resource "kubernetes_namespace" "external-dns-pihole" {
+  metadata {
+    name = "external-dns-pihole"
+  }
+}
+
+resource "helm_release" "external-dns-pihole" {
+  chart = "external-dns"
+  name  = "external-dns-pihole"
+  namespace = kubernetes_namespace.external-dns-pihole.metadata[0].name
+  repository = "https://kubernetes-sigs.github.io/external-dns/"
+
+  values = [
+    templatefile("./helm/external-dns-pihole.values.yaml", {
+      vault = var.onepassword_vault,
+      item = "PiHole"
+      server = "http://192.168.100.80"
+    })
+  ]
 }
 
 resource "random_password" "pihole_password" {

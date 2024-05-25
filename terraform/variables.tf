@@ -69,3 +69,15 @@ variable onepassword_sat {
   type = string
   sensitive = true
 }
+
+variable onepassword_cfile {
+  description = "1password Credential file"
+  type = string
+  sensitive = true
+}
+
+variable onepassword_opct {
+  description = "1password Connect Token"
+  type = string
+  sensitive = true
+}

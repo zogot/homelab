@@ -1,0 +1,27 @@
+deploymentAnnotations:
+  operator.1password.io/item-path: "vaults/${vault}/items/${item}"
+  operator.1password.io/item-name: "cloudflare-api-key"
+
+provider:
+  name: cloudflare
+
+env:
+  - name: CF_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-key
+        key: global
+  - name: CF_API_EMAIL
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-key
+        key: username
+
+sources:
+  - ingress
+
+extraArgs:
+  - --zone-id-filter=0af1fa4b9e8ad7c9e31528366a26667c
+  - --cloudflare-dns-records-per-page=5000
+  - --cloudflare-proxied
+  - --ingress-class=external
