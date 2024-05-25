@@ -9,10 +9,10 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: Never
           containers:
             - name: ddclient
               image: "linuxserver/ddclient:3.10.0"
-              restartPolicy: Always
               command:
                 - ddclient
               args:
