@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: metallb
+    repository: "https://metallb.github.io/metallb"
+    helm:
+      releaseName: metallb
+  destination:
+    server: in-cluster
+    namespace: metallb-system
+  syncPolicy:
+    managedNamespaceMetadata:
+      annotations:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: privileged
+        pod-security.kubernetes.io/warn: privileged
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

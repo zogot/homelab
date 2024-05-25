@@ -29,10 +29,11 @@ terraform {
       version = "2.0.0"
     }
 
-    argocd = {
-      source = "oboukili/argocd"
-      version = "6.1.1"
-    }
+#    argocd = {
+#      source = "oboukili/argocd"
+#      version = "6.1.1"
+#
+#    }
 
     tls = {
       source = "hashicorp/tls"
@@ -68,8 +69,8 @@ provider "onepassword" {
   service_account_token = var.onepassword_sat
 }
 
-provider "argocd" {
-  server_addr = replace(data.onepassword_item.argo-cd.url, "https://", "")
-  username = data.onepassword_item.argo-cd.username
-  password = data.onepassword_item.argo-cd.password
-}
+#provider "argocd" {
+#  server_addr = replace(data.onepassword_item.argo-cd.url, "https://", "")
+#  username = data.onepassword_item.argo-cd.username
+#  password = data.onepassword_item.argo-cd.password
+#}

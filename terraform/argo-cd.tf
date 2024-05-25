@@ -1,12 +1,7 @@
-data "onepassword_item" "argo-cd" {
-  vault = var.onepassword_vault
-  title = "ArgoCD"
-}
-
 resource "kubernetes_namespace" "argo-cd" {
   depends_on = [local_file.kube-config]
   metadata {
-    name = "argo-cd"
+    name = "argocd"
   }
 }
 
@@ -15,7 +10,9 @@ resource "helm_release" "argo-cd" {
   chart = "argo-cd"
   repository = "https://argoproj.github.io/argo-helm"
   name  = "argo-cd"
-  namespace = "argo-cd"
+  namespace = "argocd"
+
+  wait = true
 
   values = [
     "${file("helm/argo-cd.values.yaml")}"
@@ -27,9 +24,11 @@ resource "tls_private_key" "argocd-private-key" {
   rsa_bits  = 4096
 }
 
-resource "kubernetes_manifest" "argocd-application-set-homelab" {
-  manifest = yamldecode(file("../argocd/application-sets/homelab.yaml"))
-}
+#resource "kubernetes_manifest" "argocd-application-set-homelab" {
+#  depends_on = [helm_release.argo-cd]
+#
+#  manifest = yamldecode(file("../argocd/application-sets/homelab.yaml"))
+#}
 
 #resource "onepassword_item" "argocd-ssh-key" {
 #  depends_on = [tls_private_key.argocd-private-key]
@@ -71,7 +70,8 @@ resource "kubernetes_manifest" "argocd-application-set-homelab" {
 #  }
 #}
 
-resource "argocd_repository" "zogot-homelab" {
-  repo = "https://github.com/zogot/homelab"
-  type = "git"
-}
+#resource "argocd_repository" "zogot-homelab" {
+#  depends_on = [helm_release.argo-cd]
+#  repo = "https://github.com/zogot/homelab"
+#  type = "git"
+#}

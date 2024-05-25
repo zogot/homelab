@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns-cloudflare
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: external-dns
+    repository: "https://kubernetes-sigs.github.io/external-dns"
+    targetRevision: 1.14.4
+    helm:
+      releaseName: external-dns-cloudflare
+      valuesObject:
+        deploymentAnnotations:
+          operator.1password.io/item-path: "vaults/Jupiter/items/Cloudflare Token"
+          operator.1password.io/item-name: "cloudflare-api-key"
+        provider:
+          name: cloudflare
+        env:
+          - name: CF_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: cloudflare-api-key
+                key: global
+          - name: CF_API_EMAIL
+            valueFrom:
+              secretKeyRef:
+                name: cloudflare-api-key
+                key: username
+        sources:
+          - ingress
+        extraArgs:
+          - --zone-id-filter=0af1fa4b9e8ad7c9e31528366a26667c
+          - --cloudflare-dns-records-per-page=5000
+          - --cloudflare-proxied
+          - --ingress-class=external
+  destination:
+    server: in-cluster
+    namespace: external-dns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
