@@ -19,22 +19,22 @@ resource "kubernetes_secret" "op-connect-token" {
 
 }
 
-resource "kubernetes_secret" "op-credentials" {
-
-  metadata {
-    name = "op-credentials"
-    namespace = kubernetes_namespace.onepassword.metadata[0].name
-    labels = {
-      "app.kubernetes.io/component" = "connect"
-    }
-  }
-
-  type = "opaque"
-
-  binary_data = {
-    "1password-credentials.json" = base64encode(var.onepassword_cfile)
-  }
-}
+#resource "kubernetes_secret" "op-credentials" {
+#
+#  metadata {
+#    name = "op-credentials"
+#    namespace = kubernetes_namespace.onepassword.metadata[0].name
+#    labels = {
+#      "app.kubernetes.io/component" = "connect"
+#    }
+#  }
+#
+#  type = "opaque"
+#
+#  binary_data = {
+#    "1password-credentials.json" = base64encode(var.onepassword_cfile)
+#  }
+#}
 
 #resource "helm_release" "onepassword-connect" {
 #  chart = "connect"
