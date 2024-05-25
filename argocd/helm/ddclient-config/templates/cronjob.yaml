@@ -40,4 +40,7 @@ spec:
             - name: config
               configMap:
                 name: ddclient-config
+            - name: cache
+              persistentVolumeClaim:
+                claimName: ddclient-cache
 
