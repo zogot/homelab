@@ -12,7 +12,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: ddclient
-              image: "linuxserver/ddclient:3.10.0"
+              image: "linuxserver/ddclient:3.11.2"
               command:
                 - ddclient
               args:
