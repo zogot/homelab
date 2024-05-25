@@ -106,30 +106,3 @@ resource "proxmox_virtual_environment_container" "pihole" {
     }
   }
 }
-
-#resource "kubernetes_namespace" "external-dns-pihole" {
-#  metadata {
-#    name = "external-dns-pihole"
-#  }
-#}
-#
-#resource "helm_release" "external-dns-pihole" {
-#  chart = "external-dns"
-#  name  = "external-dns-pihole"
-#  namespace = kubernetes_namespace.external-dns-pihole.metadata[0].name
-#  repository = "https://kubernetes-sigs.github.io/external-dns/"
-#
-#  values = [
-#    templatefile("./helm/external-dns-pihole.values.yaml", {
-#      vault = var.onepassword_vault,
-#      item = "PiHole"
-#      server = "http://192.168.100.80"
-#    })
-#  ]
-#}
-#
-#resource "random_password" "pihole_password" {
-#  length           = 16
-#  override_special = "_%@"
-#  special          = true
-#}

@@ -8,7 +8,7 @@ configs:
 server:
   ingress:
     enabled: true
-    ingressClassName: external
+    ingressClassName: internal
     tls: true
     annotations: {
       cert-manager.io/cluster-issuer: "letsencrypt-prod",
