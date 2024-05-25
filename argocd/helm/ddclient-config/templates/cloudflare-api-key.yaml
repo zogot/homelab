@@ -1,7 +1,0 @@
-apiVersion: onepassword.com/v1
-kind: OnePasswordItem
-metadata:
-  name: cloudflare-api-key
-  namespace: {{.Release.Namespace}}
-spec:
-  itemPath: vaults/Jupiter/items/Cloudflare Token
