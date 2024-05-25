@@ -10,9 +10,9 @@ spec:
       template:
         spec:
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
+            runAsUser: 911
+            runAsGroup: 911
+            fsGroup: 911
           restartPolicy: Never
           containers:
             - name: ddclient
@@ -46,7 +46,7 @@ spec:
             - name: config
               configMap:
                 name: ddclient-config
-                defaultMode: 0640
+                defaultMode: 0600
             - name: cache
               persistentVolumeClaim:
                 claimName: ddclient-cache
