@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ddclient
+  namespace: {{.Release.Namespace}}
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ddclient
+              image: "linuxserver/ddclient:3.10.0"
+              command:
+                - ddclient
+              args:
+                - -daemon=0
+                - -debug
+                - -noquiet
+                - -cache "/tmp/ddclient/ddclient.cache"
+              env:
+                - name: DDCLIENT_LOGIN
+                  valueFrom:
+                    secretKeyRef:
+                      name: cloudflare-api-key
+                      key: username
+                - name: DDCLIENT_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: cloudflare-api-key
+                      key: global
+              volumeMounts:
+                - mountPath: /etc/ddclient/ddclient.conf
+                  name: config
+                  subPath: ddclient.conf
+                - mountPath: /tmp/ddclient
+                  name: cache
+          volumes:
+            - name: config
+              configMap:
+                name: ddclient-config
+
