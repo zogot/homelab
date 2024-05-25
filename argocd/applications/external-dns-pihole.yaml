@@ -31,7 +31,7 @@ spec:
           - --ingress-class=external
           - --ingress-class=internal
   destination:
-    server: in-cluster
+    server: https://kubernetes.default.svc
     namespace: external-dns
   syncPolicy:
     automated:

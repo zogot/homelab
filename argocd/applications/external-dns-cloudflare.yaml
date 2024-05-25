@@ -36,7 +36,7 @@ spec:
           - --cloudflare-proxied
           - --ingress-class=external
   destination:
-    server: in-cluster
+    server: https://kubernetes.default.svc
     namespace: external-dns
   syncPolicy:
     automated:
