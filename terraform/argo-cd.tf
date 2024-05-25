@@ -27,6 +27,10 @@ resource "tls_private_key" "argocd-private-key" {
   rsa_bits  = 4096
 }
 
+resource "kubernetes_manifest" "argocd-application-set-homelab" {
+  manifest = yamldecode(file("../argocd/application-sets/homelab.yaml"))
+}
+
 #resource "onepassword_item" "argocd-ssh-key" {
 #  depends_on = [tls_private_key.argocd-private-key]
 #  vault = var.onepassword_vault
