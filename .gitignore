@@ -4,3 +4,4 @@ jupiter.tfvars
 .tfstate
 .idea
 output
+argocd/applications/*/charts/

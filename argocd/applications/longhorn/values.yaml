@@ -1,0 +1,11 @@
+longhorn:
+  ingress:
+    enabled: true
+    ingressClassName: internal
+    tls: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      external-dns.alpha.kubernetes.io/access: "private"
+
+  preUpgradeChecker:
+    jobEnabled: false
