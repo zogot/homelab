@@ -17,14 +17,6 @@ spec:
           containers:
             - name: ddclient
               image: "lscr.io/linuxserver/ddclient:latest"
-              command:
-                - ddclient
-              args:
-                - -daemon=0
-                - -debug
-                - -noquiet
-                - -cache
-                - "/tmp/ddclient/ddclient.cache"
               env:
                 - name: PUID
                   value: "1000"
